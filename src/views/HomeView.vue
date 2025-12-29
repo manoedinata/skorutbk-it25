@@ -42,8 +42,7 @@
                 <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6">
                     <p class="text-slate-500 text-sm font-medium uppercase">Rata-rata Tertinggi</p>
                     <div class="flex items-baseline gap-2 mt-1">
-                        <h3 class="text-3xl font-bold text-slate-800">{{ avgMax[0] }}</h3>
-                        <span class="text-sm text-green-600 font-semibold">{{ avgMax[1] }}</span>
+                        <h3 class="text-3xl font-bold text-slate-800">{{ avgMax }}</h3>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-2.5 mt-4">
                         <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 80%"></div>
@@ -153,15 +152,12 @@ const avgData = [722.47, 684.27, 694.54, 749.18, 655.19, 708.92, 724.22];
 const maxData = [821.37, 796.15, 800.43, 881.09, 802, 816.9, 912.67];
 
 const avgMean = ref("-");
-const avgMax = ref(["-", "-"]); // [score, subtest]
+const avgMax = ref("-");
 const maxSubtest = ref(["-", "-"]); // [score, subtest]
 
 onMounted(() => {
     avgMean.value = (avgData.reduce((a, b) => a + b, 0) / avgData.length).toFixed(2);
-    avgMax.value = [
-        Math.max(...avgData).toFixed(2),
-        labels2[avgData.indexOf(Math.max(...avgData))]
-    ];
+    avgMax.value = Math.max(...avgData).toFixed(2)
     maxSubtest.value = [
         Math.max(...maxData).toFixed(2),
         labels2[maxData.indexOf(Math.max(...maxData))]
