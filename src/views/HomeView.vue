@@ -261,17 +261,3 @@ body {
     }
 }
 </style>
-
-<!-- <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    primary: '#4f46e5', // Indigo 600
-                    secondary: '#64748b', // Slate 500
-                    accent: '#f8fafc', // Slate 50
-                }
-            }
-        }
-    }
-</script> -->
