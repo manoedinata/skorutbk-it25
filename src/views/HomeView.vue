@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6">
+                <!-- <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6">
                     <p class="text-slate-500 text-sm font-medium uppercase">Subtes Tertinggi</p>
                     <div class="flex items-baseline gap-2 mt-1">
                         <h3 class="text-3xl font-bold text-slate-800">{{ maxSubtest[0] }}</h3>
@@ -58,7 +58,7 @@
                     <div class="w-full bg-slate-100 rounded-full h-2.5 mt-4">
                         <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 90%"></div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -78,47 +78,12 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">PU (Penalaran Umum)</td>
-                            <td class="px-6 py-4 text-center">610,39</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">722,47</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">821,37</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">PPU (Pengetahuan & Pemahaman Umum)</td>
-                            <td class="px-6 py-4 text-center">580,59</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">684,27</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">796,15</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">PBM (Pemahaman Bacaan & Menulis)</td>
-                            <td class="px-6 py-4 text-center">524,20</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">694,54</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">800,43</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">PK (Pengetahuan Kuantitatif)</td>
-                            <td class="px-6 py-4 text-center">560,23</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">749,18</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">881,09</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">LBI (Literasi B. Indonesia)</td>
-                            <td class="px-6 py-4 text-center">527,56</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">655,19</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">802,00</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">Lit.Bing (Literasi B. Inggris)</td>
-                            <td class="px-6 py-4 text-center">586,12</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">708,92</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">816,90</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-6 py-4 font-medium text-slate-900">PM (Penalaran Matematika)</td>
-                            <td class="px-6 py-4 text-center">560,07</td>
-                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">724,22</td>
-                            <td class="px-6 py-4 text-center text-emerald-600">912,67</td>
+                        <tr class="hover:bg-slate-50 transition" v-for="(label, index) in labels2" :key="label">
+                            <td class="px-6 py-4 font-medium text-slate-900">{{ label }}</td>
+                            <td class="px-6 py-4 text-center">{{ minData[index] }}</td>
+                            <td class="px-6 py-4 text-center font-semibold bg-indigo-50/30 text-indigo-700">{{
+                                meanData[index] }}</td>
+                            <td class="px-6 py-4 text-center text-emerald-600">{{ maxData[index] }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -137,7 +102,19 @@ import { onMounted, ref } from 'vue';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-const labels = ['PU', 'PPU', 'PBM', 'PK', 'LBI', 'Lit.Bing', 'PM'];
+// Import JSON data
+import scoreData from '../../data/scores.json';
+console.log(scoreData);
+
+const avgMean = ref(0);
+const avgMax = ref(0);
+const avgMin = ref(0);
+
+const minData = ref([]);
+const meanData = ref([]);
+const maxData = ref([]);
+
+const labels = ['PU', 'PPU', 'PBM', 'PK', 'LBI', 'LBE', 'PM'];
 const labels2 = [
     "PU (Penalaran Umum)",
     "PPU (Pengetahuan & Pemahaman Umum)",
@@ -147,21 +124,16 @@ const labels2 = [
     "Lit.Bing (Literasi B. Inggris)",
     "PM (Penalaran Matematika)"
 ]
-const minData = [610.39, 580.59, 524.2, 560.23, 527.56, 586.12, 560.07];
-const avgData = [722.47, 684.27, 694.54, 749.18, 655.19, 708.92, 724.22];
-const maxData = [821.37, 796.15, 800.43, 881.09, 802, 816.9, 912.67];
-
-const avgMean = ref("-");
-const avgMax = ref("-");
-const maxSubtest = ref(["-", "-"]); // [score, subtest]
 
 onMounted(() => {
-    avgMean.value = (avgData.reduce((a, b) => a + b, 0) / avgData.length).toFixed(2);
-    avgMax.value = Math.max(...avgData).toFixed(2)
-    maxSubtest.value = [
-        Math.max(...maxData).toFixed(2),
-        labels2[maxData.indexOf(Math.max(...maxData))]
-    ];
+    avgMean.value = scoreData.mean.toFixed(2);
+    avgMax.value = scoreData.max.toFixed(2);
+    avgMin.value = scoreData.min.toFixed(2);
+
+    // Populate min, mean, max data arrays
+    minData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["min"].toFixed(2));
+    meanData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["mean"].toFixed(2));
+    maxData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["max"].toFixed(2));
 
     const ctx = document.getElementById('scoreChart').getContext('2d');
 
@@ -172,21 +144,21 @@ onMounted(() => {
             datasets: [
                 {
                     label: 'Min',
-                    data: minData,
+                    data: minData.value,
                     backgroundColor: '#cbd5e1', // Slate 300
                     borderRadius: 4,
                     barPercentage: 0.6,
                 },
                 {
                     label: 'Average',
-                    data: avgData,
+                    data: meanData.value,
                     backgroundColor: '#6366f1', // Indigo 500
                     borderRadius: 4,
                     barPercentage: 0.6,
                 },
                 {
                     label: 'Max',
-                    data: maxData,
+                    data: maxData.value,
                     backgroundColor: '#34d399', // Emerald 400
                     borderRadius: 4,
                     barPercentage: 0.6,
