@@ -90,9 +90,6 @@
             </div>
         </div>
 
-        <footer class="text-center text-slate-400 text-sm py-6">
-            &copy; Teknologi Informasi 2025 ITS.
-        </footer>
     </div>
 </template>
 
