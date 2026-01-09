@@ -99,10 +99,7 @@ import { onMounted, ref } from 'vue';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-// Import JSON data
-import scoreData from '../../data/scores.json';
-console.log(scoreData);
-
+const scoreData = ref({});
 const avgMean = ref(0);
 const avgMax = ref(0);
 const avgMin = ref(0);
@@ -122,15 +119,21 @@ const labels2 = [
     "PM (Penalaran Matematika)"
 ]
 
-onMounted(() => {
-    avgMean.value = scoreData.mean.toFixed(2);
-    avgMax.value = scoreData.max.toFixed(2);
-    avgMin.value = scoreData.min.toFixed(2);
+async function fetchScoreData() {
+    return (await fetch('/scores.json')).json();
+}
+
+onMounted(async () => {
+    scoreData.value = await fetchScoreData();
+
+    avgMean.value = scoreData.value.mean.toFixed(2);
+    avgMax.value = scoreData.value.max.toFixed(2);
+    avgMin.value = scoreData.value.min.toFixed(2);
 
     // Populate min, mean, max data arrays
-    minData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["min"].toFixed(2));
-    meanData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["mean"].toFixed(2));
-    maxData.value = labels.map(key => scoreData.summary[key.toLowerCase()]["max"].toFixed(2));
+    minData.value = labels.map(key => scoreData.value.summary[key.toLowerCase()]["min"].toFixed(2));
+    meanData.value = labels.map(key => scoreData.value.summary[key.toLowerCase()]["mean"].toFixed(2));
+    maxData.value = labels.map(key => scoreData.value.summary[key.toLowerCase()]["max"].toFixed(2));
 
     const ctx = document.getElementById('scoreChart').getContext('2d');
 
