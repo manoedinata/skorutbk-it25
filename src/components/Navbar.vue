@@ -28,7 +28,7 @@ const menuItems = [
 
                 <div class="hidden md:flex space-x-8 items-center">
                     <RouterLink v-for="item in menuItems" :key="item.name" :to="item.to"
-                        class="text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors duration-200">
+                        class="navbar-links text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors duration-200">
                         {{ item.name }}
                     </RouterLink>
 
@@ -73,3 +73,11 @@ const menuItems = [
         </transition>
     </nav>
 </template>
+
+<style scoped>
+/* Active navbar */
+nav a.navbar-links.router-link-active {
+    color: #4f46e5;
+    background-color: #eef2ff;
+}
+</style>
