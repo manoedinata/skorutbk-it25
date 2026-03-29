@@ -13,7 +13,7 @@ import Navbar from './components/Navbar.vue'
   </main>
 
   <footer class="text-center text-slate-400 text-sm py-6">
-    &copy; Teknologi Informasi 2025 ITS
+    &copy; Teknologi Informasi 2025 ITS. Sorry if the website isn't pretty, but the data is all that matters.
   </footer>
 
   <Analytics />
